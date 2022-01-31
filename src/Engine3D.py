@@ -1,3 +1,6 @@
+# Simple 3d engine made using the https://www.youtube.com/c/javidx9 tutorial series
+# Author: Eric Alfaro
+
 import tkinter
 from Math3D import *
 
@@ -91,6 +94,7 @@ fov = 90.0
 projection_matrix = create_projection_matrix(aspect_ratio, fov, z_far, z_near)
 
 #Loads .obj file and returns a Mesh
+#.obj files need to be triangulated and with normals removed
 def obj_to_triangles(file_path):
     points = []
     triangles = []
@@ -153,7 +157,7 @@ def draw_triangles(triangles, normal_culling):
     else:
         visible_triangles = [tri for tri in triangles if dot_product_vector3d(tri.normal, subtract_vector3d(tri.points[0], camera.position)) < 0]
 
-    #Sort visible trriangles by distance from camera
+    #Sort visible triangles by distance from camera
     for tri in visible_triangles:
         camera_to_point = subtract_vector3d(tri.get_center(), camera.position)
         tri.distance_from_camera = sqrt(dot_product_vector3d(camera_to_point, camera_to_point))
@@ -224,7 +228,7 @@ def draw_triangles(triangles, normal_culling):
                 #canvas.create_line(polygon_coordinates, fill = "White")
 
 #Test scene
-my_mesh = Mesh(obj_to_triangles("yoshi.obj"))
+my_mesh = Mesh(obj_to_triangles("../models/teapot.obj"))
 for triangle in my_mesh.triangles:
     for i in range(3):
         if not triangle.points[i].transformed:
@@ -233,11 +237,13 @@ for triangle in my_mesh.triangles:
 main_light = Light(normalize_vector3d(Vector3d(.3, -1, -.3)), (255,255,255))
 current_lights.append(main_light)
 
-def main():
-    canvas.delete("all")
-    draw_triangles(my_mesh.triangles, True)
-    window.update()
 canvas.pack()
 
-while True:
+def main():
+    while True:
+        canvas.delete("all")
+        draw_triangles(my_mesh.triangles, True)
+        window.update()
+
+if __name__ == "__main__":
     main()
