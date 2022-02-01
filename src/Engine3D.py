@@ -228,7 +228,7 @@ def draw_triangles(triangles, normal_culling):
                 #canvas.create_line(polygon_coordinates, fill = "White")
 
 #Test scene
-my_mesh = Mesh(obj_to_triangles("../models/teapot.obj"))
+my_mesh = Mesh(obj_to_triangles("../models/item.obj"))
 for triangle in my_mesh.triangles:
     for i in range(3):
         if not triangle.points[i].transformed:
